@@ -38,6 +38,14 @@
     img{max-width:100%;display:block}
     a{color:inherit}
 
+    /* Accessibility helper */
+    .visually-hidden{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* Mobile drawer default: hidden on all sizes */
+    .mobile-drawer{display:none}
+    .mobile-drawer ul{list-style:none;margin:0;padding:0}
+
+
     /* Layout */
     .wrap{max-width:var(--maxw);margin-inline:auto;padding:0 20px}
     section{padding:64px 0}
@@ -64,7 +72,7 @@
     @media (max-width: 980px){
       nav{display:none}
       .burger{display:inline-grid;place-items:center}
-      .mobile-drawer{display:none;position:fixed;inset:68px 0 0 0;background:white;box-shadow:var(--shadow);padding:16px}
+      .mobile-drawer{position:fixed;inset:68px 0 0 0;background:white;box-shadow:var(--shadow);padding:16px}
       .mobile-drawer.open{display:block}
       .mobile-drawer ul{display:grid;gap:6px}
       .mobile-drawer a{display:block;padding:12px 14px;border-radius:12px;color:#0b1a34;font-weight:600}
