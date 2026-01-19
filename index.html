@@ -30,7 +30,7 @@
       --space-xl: 5rem;
       
       --radius-sm: 4px;
-      --radius-md: 8px;
+      --radius-md: 12px;
     }
 
     /* --- RESET & BASE --- */
@@ -101,7 +101,7 @@
     }
     .btn-outline:hover { border-color: var(--col-navy); }
 
-    /* --- HEADER (FIXED ALIGNMENT) --- */
+    /* --- HEADER (Brand Name Added) --- */
     header {
       position: sticky;
       top: 0;
@@ -114,30 +114,44 @@
     .nav-flex {
       display: flex;
       justify-content: space-between;
-      align-items: center; /* Critical: vertically aligns logo, nav, and button */
+      align-items: center;
       height: 100%;
     }
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .brand-logo {
-      height: 40px; /* Adjusted for perfect proportion with nav text */
+      height: 40px; 
       width: auto;
     }
+    /* New styles for the text next to logo */
+    .brand-text {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.125rem;
+      color: var(--col-navy);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      max-width: 150px; /* Wraps nicely on tiny screens */
+    }
+    
     nav ul {
       display: flex;
       list-style: none;
-      gap: 32px; /* Consistent spacing between links */
+      gap: 32px; 
       padding: 0;
       margin: 0;
-      align-items: center; /* Ensures text is centered */
+      align-items: center; 
     }
     nav a {
       font-weight: 600;
       font-size: 0.95rem;
       color: var(--col-text-main);
-      position: relative;
     }
     nav a:hover { color: var(--col-orange); }
     
-    /* Mobile Menu Trigger */
     .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
     /* --- HERO --- */
@@ -156,18 +170,43 @@
     .hero h1 { color: white; margin-bottom: var(--space-md); }
     .hero p { color: #cbd5e1; font-size: 1.2rem; max-width: 90%; }
     
+    /* --- NEW INTERACTIVE DOT VISUAL --- */
     .hero-visual {
       position: relative;
       height: 450px;
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: var(--radius-md);
-      /* Technical Grid Pattern */
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-      background-size: 30px 30px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    /* Grid container for dots */
+    .dots-container {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr); /* 10 dots wide */
+      gap: 20px;
+      padding: 20px;
+      width: 100%;
+      height: 100%;
+    }
+    /* The individual dot */
+    .dot {
+      width: 4px;
+      height: 4px;
+      background-color: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      margin: auto;
+      transition: all 0.2s ease;
+    }
+    /* Hover effect: Glows orange when touched */
+    .dot:hover {
+      background-color: var(--col-orange);
+      box-shadow: 0 0 10px var(--col-orange), 0 0 20px var(--col-orange);
+      transform: scale(2);
+    }
+    
     .pill {
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.15);
@@ -178,13 +217,12 @@
       letter-spacing: 0.05em;
     }
 
-    /* --- CARDS & GRID --- */
+    /* --- CARDS --- */
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: var(--space-md);
     }
-    
     .card {
       background: white;
       border: 1px solid var(--col-border);
@@ -209,7 +247,7 @@
     }
     .card:hover::before { opacity: 1; }
 
-    /* --- PROCESS SECTION --- */
+    /* --- PROCESS --- */
     .step-card {
       background: var(--col-light);
       border: 1px solid var(--col-border);
@@ -314,8 +352,9 @@
 
   <header>
     <div class="wrap nav-flex">
-      <a href="#" style="display: flex; align-items: center;">
+      <a href="#" class="brand-link">
         <img src="Image_1.svg" alt="Dukab Logo" class="brand-logo">
+        <div class="brand-text">Dukab Cable Technologies</div>
       </a>
       
       <nav>
@@ -342,8 +381,12 @@
           <a href="#products" class="btn btn-outline" style="background: transparent; color: white; border-color: rgba(255,255,255,0.3);">View Catalog</a>
         </div>
       </div>
+      
       <div class="hero-visual">
-        <div style="position: absolute; bottom: 30px; left: 30px; color: rgba(255,255,255,0.5); font-family: monospace; font-size: 0.9rem;">
+        <div class="dots-container" id="dotsGrid">
+          </div>
+        
+        <div style="position: absolute; bottom: 30px; left: 30px; color: rgba(255,255,255,0.5); font-family: monospace; font-size: 0.9rem; pointer-events: none;">
           > SYSTEM_STATUS: ONLINE<br>
           > REGION: UAE_DUBAI<br>
           > STOCK: LIVE
@@ -363,7 +406,7 @@
         <article class="card">
           <span class="label">Components</span>
           <h3>Automation Parts</h3>
-          <p>Sourcing LEDs, PCBs, Connectors, and enclosures for industrial automation and maintenance.</p>
+          <p>Sourcing LEDs, PCBs, connectors, and enclosures for industrial automation and maintenance.</p>
         </article>
         <article class="card">
           <span class="label">Logistics</span>
@@ -512,6 +555,16 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const grid = document.getElementById('dotsGrid');
+    // Create 80 dots (8 columns x 10 rows approx)
+    for(let i=0; i<80; i++){
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      grid.appendChild(dot);
+    }
+  </script>
 
 </body>
 </html>
