@@ -101,7 +101,7 @@
     }
     .btn-outline:hover { border-color: var(--col-navy); }
 
-    /* --- HEADER (Brand Name Added) --- */
+    /* --- HEADER --- */
     header {
       position: sticky;
       top: 0;
@@ -126,7 +126,6 @@
       height: 40px; 
       width: auto;
     }
-    /* New styles for the text next to logo */
     .brand-text {
       font-family: 'Manrope', sans-serif;
       font-weight: 800;
@@ -134,7 +133,7 @@
       color: var(--col-navy);
       letter-spacing: -0.01em;
       line-height: 1.1;
-      max-width: 150px; /* Wraps nicely on tiny screens */
+      max-width: 150px; 
     }
     
     nav ul {
@@ -170,41 +169,40 @@
     .hero h1 { color: white; margin-bottom: var(--space-md); }
     .hero p { color: #cbd5e1; font-size: 1.2rem; max-width: 90%; }
     
-    /* --- NEW INTERACTIVE DOT VISUAL --- */
+    /* --- NEW INTERACTIVE HALO GRID --- */
     .hero-visual {
       position: relative;
       height: 450px;
-      background: rgba(255,255,255,0.02);
+      background: #020b1f; /* Darker bg for contrast */
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: var(--radius-md);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: crosshair;
     }
-    /* Grid container for dots */
     .dots-container {
       display: grid;
-      grid-template-columns: repeat(10, 1fr); /* 10 dots wide */
-      gap: 20px;
-      padding: 20px;
+      /* Denser grid: approx 50x50 fits nicely without crashing browser */
+      grid-template-columns: repeat(50, 1fr); 
       width: 100%;
       height: 100%;
     }
-    /* The individual dot */
     .dot {
-      width: 4px;
-      height: 4px;
-      background-color: rgba(255,255,255,0.15);
+      width: 2px;
+      height: 2px;
+      background-color: rgba(255,255,255,0.1); /* Very faint by default */
       border-radius: 50%;
       margin: auto;
-      transition: all 0.2s ease;
+      transition: background-color 0.1s, transform 0.1s;
+      will-change: background-color, transform; /* Performance optimization */
     }
-    /* Hover effect: Glows orange when touched */
-    .dot:hover {
+    /* The active class will be added by JS for the halo */
+    .dot.active {
       background-color: var(--col-orange);
-      box-shadow: 0 0 10px var(--col-orange), 0 0 20px var(--col-orange);
-      transform: scale(2);
+      box-shadow: 0 0 4px var(--col-orange);
+      transform: scale(1.5);
     }
     
     .pill {
@@ -382,7 +380,7 @@
         </div>
       </div>
       
-      <div class="hero-visual">
+      <div class="hero-visual" id="visualContainer">
         <div class="dots-container" id="dotsGrid">
           </div>
         
@@ -558,12 +556,51 @@
 
   <script>
     const grid = document.getElementById('dotsGrid');
-    // Create 80 dots (8 columns x 10 rows approx)
-    for(let i=0; i<80; i++){
+    const container = document.getElementById('visualContainer');
+    
+    // Create dense grid (approx 2500 dots)
+    const DOTS_COUNT = 2500; 
+    
+    for(let i=0; i<DOTS_COUNT; i++){
       const dot = document.createElement('div');
       dot.classList.add('dot');
       grid.appendChild(dot);
     }
+    
+    // Halo Glow Logic
+    const dots = document.querySelectorAll('.dot');
+    
+    container.addEventListener('mousemove', (e) => {
+      // Get container boundaries
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Radius of the halo
+      const radius = 100; 
+
+      dots.forEach(dot => {
+        // Get dot position relative to container
+        const dotX = dot.offsetLeft;
+        const dotY = dot.offsetTop;
+        
+        // Calculate distance
+        const dist = Math.sqrt(Math.pow(x - dotX, 2) + Math.pow(y - dotY, 2));
+        
+        if (dist < radius) {
+          dot.classList.add('active');
+          // Optional: Scale based on proximity
+          // dot.style.opacity = 1 - (dist / radius); 
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    });
+
+    // Clear on mouse leave
+    container.addEventListener('mouseleave', () => {
+      dots.forEach(dot => dot.classList.remove('active'));
+    });
   </script>
 
 </body>
