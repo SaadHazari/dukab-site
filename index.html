@@ -35,13 +35,18 @@
 
     /* --- RESET & BASE --- */
     *, *::before, *::after { box-sizing: border-box; }
-    body {
+    
+    html, body {
       margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden; /* CRITICAL FIX: Prevents horizontal scrolling */
       font-family: 'Inter', sans-serif;
       color: var(--col-text-main);
       background-color: var(--col-white);
       line-height: 1.6;
     }
+
     img { max-width: 100%; display: block; }
     a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 
@@ -169,11 +174,11 @@
     .hero h1 { color: white; margin-bottom: var(--space-md); }
     .hero p { color: #cbd5e1; font-size: 1.2rem; max-width: 90%; }
     
-    /* --- NEW INTERACTIVE HALO GRID --- */
+    /* --- HERO VISUAL (HALO) --- */
     .hero-visual {
       position: relative;
       height: 450px;
-      background: #020b1f; /* Darker bg for contrast */
+      background: #020b1f; 
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: var(--radius-md);
       overflow: hidden;
@@ -184,7 +189,6 @@
     }
     .dots-container {
       display: grid;
-      /* Denser grid: approx 50x50 fits nicely without crashing browser */
       grid-template-columns: repeat(50, 1fr); 
       width: 100%;
       height: 100%;
@@ -192,13 +196,12 @@
     .dot {
       width: 2px;
       height: 2px;
-      background-color: rgba(255,255,255,0.1); /* Very faint by default */
+      background-color: rgba(255,255,255,0.1);
       border-radius: 50%;
       margin: auto;
       transition: background-color 0.1s, transform 0.1s;
-      will-change: background-color, transform; /* Performance optimization */
+      will-change: background-color, transform;
     }
-    /* The active class will be added by JS for the halo */
     .dot.active {
       background-color: var(--col-orange);
       box-shadow: 0 0 4px var(--col-orange);
@@ -218,7 +221,8 @@
     /* --- CARDS --- */
     .grid-3 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      /* FIX: Reduced minmax from 320px to 280px to fit mobile screens */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: var(--space-md);
     }
     .card {
@@ -338,11 +342,16 @@
 
     /* --- RESPONSIVE --- */
     @media (max-width: 900px) {
+      /* FIX: Reduce padding to prevent narrow content */
+      .wrap { padding: 0 1rem; } 
+      
       .hero-grid { grid-template-columns: 1fr; text-align: center; }
       .hero-visual { display: none; }
       .nav-flex nav { display: none; }
       .mobile-menu-btn { display: block; }
       h1 { font-size: 2.2rem; }
+      
+      .brand-text { font-size: 1rem; max-width: 130px; }
     }
   </style>
 </head>
@@ -492,7 +501,7 @@
 
   <section id="contact" class="bg-light">
     <div class="wrap">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--space-xl);">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-xl);">
         
         <div>
           <h2>Request a Quote</h2>
